@@ -1,0 +1,9 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import MarkdownSection from "../../components/MarkdownSection.astro";
+import page from "../../data/pages/iletisim.json";
+---
+
+<SiteLayout page={page} currentPath="/iletisim/">
+  <MarkdownSection markdown={page.body} />
+</SiteLayout>

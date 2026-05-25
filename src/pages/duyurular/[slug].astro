@@ -1,0 +1,54 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import ArticleContent from "../../components/ArticleContent.astro";
+import basePage from "../../data/pages/duyurular.json";
+import announcementsData from "../../data/duyurular.json";
+
+type AnnouncementPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  coverImage: string;
+  body: string;
+};
+
+export function getStaticPaths() {
+  const posts = announcementsData.posts as AnnouncementPost[];
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as { post: AnnouncementPost };
+const publishedDate = new Date(post.date).toLocaleDateString("tr-TR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+
+const page = {
+  ...basePage,
+  path: `/duyurular/${post.slug}/`,
+  menuLabel: "Duyurular",
+  metaTitle: `${post.title} | Duyurular | RZG YMM`,
+  metaDescription: post.excerpt,
+  heroBadge: "DUYURULAR",
+  heroTitle: post.title,
+  heroDescription: post.excerpt,
+  heroImage: post.coverImage || basePage.heroImage,
+  body: post.body,
+};
+---
+
+<SiteLayout page={page} currentPath={`/duyurular/${post.slug}/`}>
+  <section class="container-shell pb-8 pt-12 sm:pt-16">
+    <div class="news-article-head">
+      <a href="/duyurular/" class="news-back-link">← Tüm Duyurular</a>
+      <p class="news-date">{publishedDate}</p>
+    </div>
+  </section>
+
+  <ArticleContent markdown={post.body} />
+</SiteLayout>

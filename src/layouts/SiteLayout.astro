@@ -1,0 +1,386 @@
+---
+import site from "../data/site.json";
+import { icons } from "lucide";
+import type { PageData } from "../lib/pageData";
+
+interface Props {
+  page: PageData;
+  currentPath: string;
+  hideHero?: boolean;
+}
+
+const { page, currentPath, hideHero = false } = Astro.props;
+const whatsappNumber = site.phoneHref.replace(/\D/g, "");
+const whatsappUrl = `https://wa.me/${whatsappNumber}`;
+
+const isActive = (href: string) => {
+  if (href === "/") return currentPath === "/";
+  return currentPath.startsWith(href);
+};
+
+const isServicePath = site.serviceMenu.some((service) => currentPath.startsWith(service.href));
+
+const servicePresentation: Record<string, { icon: string; desc: string }> = {
+  "/tam-tasdik-hizmetleri/": {
+    icon: "FileCheck2",
+    desc: "Mali tablolar ve beyan süreçlerinde güven odaklı tasdik yaklaşımı.",
+  },
+  "/muhasebe-hizmeti/": {
+    icon: "Calculator",
+    desc: "KDV iadesi ve muhasebe süreçlerinde hızlı ve hatasız operasyon.",
+  },
+  "/denetim-ve-inceleme-danismanligi/": {
+    icon: "ShieldCheck",
+    desc: "İnceleme süreçlerine hazırlık ve risk minimizasyonu danışmanlığı.",
+  },
+  "/vergi-hizmetleri/": {
+    icon: "ReceiptText",
+    desc: "Vergi planlama, beyan ve uyum adımlarında bütüncül destek.",
+  },
+  "/tesvik-ve-yardimlar/": {
+    icon: "Factory",
+    desc: "Yatırım, teşvik ve istihdam desteklerinde uçtan uca rehberlik.",
+  },
+};
+
+const toAttrs = (attrs: Record<string, string>) =>
+  Object.entries(attrs)
+    .map(([key, value]) => `${key}="${value}"`)
+    .join(" ");
+
+const renderIcon = (iconName: string, className = "h-5 w-5") => {
+  const iconNode = icons[iconName as keyof typeof icons] as [string, Record<string, string>][];
+  if (!iconNode) return "";
+  const children = iconNode.map(([tag, attrs]) => `<${tag} ${toAttrs(attrs)} />`).join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" class="${className}" aria-hidden="true">${children}</svg>`;
+};
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{page.metaTitle}</title>
+    <meta name="description" content={page.metaDescription} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  </head>
+  <body class="top-gradient">
+    <div class="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(to_right,#dbeafe1f_1px,transparent_1px),linear-gradient(to_bottom,#dbeafe1f_1px,transparent_1px)] bg-[size:36px_36px]"></div>
+
+    <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
+      <div class="border-b border-slate-100 bg-slate-50/80">
+        <div class="container-shell flex items-center justify-between gap-2 py-1.5 text-[11px] text-slate-600 sm:flex-wrap sm:gap-3 sm:py-3 sm:text-sm">
+          <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap sm:flex-wrap sm:gap-4">
+            <a class="top-contact-link font-medium text-slate-700 transition hover:text-brand-700" href={`tel:${site.phoneHref}`}>
+              <span class="top-contact-icon" set:html={renderIcon("PhoneCall", "h-3.5 w-3.5")}></span>
+              {site.phoneDisplay}
+            </a>
+            <a class="top-contact-link hidden transition hover:text-brand-700 sm:inline-flex" href={`mailto:${site.email}`}>
+              <span class="top-contact-icon" set:html={renderIcon("Mail", "h-3.5 w-3.5")}></span>
+              {site.email}
+            </a>
+            <span class="top-contact-link hidden lg:inline-flex">
+              <span class="top-contact-icon" set:html={renderIcon("MapPin", "h-3.5 w-3.5")}></span>
+              {site.address}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-shell">
+        <div class="flex items-center justify-between py-1.5 sm:py-3 lg:py-4">
+          <a href="/" class="flex items-center gap-3">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-ink-900 text-[10px] font-bold text-white sm:h-10 sm:w-10 sm:rounded-xl sm:text-sm">RZG</span>
+            <span class="flex flex-col">
+              <span class="text-sm font-semibold leading-tight text-ink-900 sm:text-lg">{site.shortName}</span>
+              <span class="hidden text-[11px] font-medium uppercase tracking-[0.12em] text-slate-500 lg:block">
+                Yeminli Mali Müşavirlik Denetim ve Danışmanlık
+              </span>
+            </span>
+          </a>
+
+          <button
+            id="menuToggle"
+            class="mobile-menu-toggle lg:hidden"
+            aria-label="Menüyü aç"
+            aria-expanded="false"
+            aria-controls="mobileMenu"
+          >
+            <span class="sr-only">Menü</span>
+            <span class="mobile-menu-line mobile-menu-line-top" aria-hidden="true"></span>
+            <span class="mobile-menu-line mobile-menu-line-bottom" aria-hidden="true"></span>
+          </button>
+
+          <nav class="hidden items-center gap-6 text-[15px] font-medium text-slate-700 lg:flex">
+            {
+              site.mainMenu.map((item) => {
+                if (item.type === "services") {
+                  return (
+                    <div class="relative group">
+                      <button
+                        type="button"
+                        class={`nav-main-link inline-flex items-center gap-2 transition hover:text-brand-700 ${isServicePath ? "font-semibold text-slate-900" : ""}`}
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-current={isServicePath ? "page" : undefined}
+                      >
+                        {item.label}
+                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.51a.75.75 0 01-1.08 0l-4.25-4.51a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                      </button>
+                      <div class="absolute left-0 top-full z-40 hidden w-[min(92vw,620px)] pt-5 group-hover:block group-focus-within:block">
+                        <div class="service-mega-panel overflow-hidden border border-slate-200 bg-white shadow-[0_35px_80px_-35px_rgba(15,23,42,0.45)]">
+                          <div class="service-mega-line"></div>
+                          <div class="px-6 pb-6 pt-5">
+                            <p class="service-mega-title">
+                              Sunduğumuz Hizmetler
+                            </p>
+                            <div class="mt-4 grid gap-3">
+                              {
+                                site.serviceMenu.map((service) => {
+                                  const details = servicePresentation[service.href] ?? {
+                                    icon: "BadgeCheck",
+                                    desc: "Kurumsal ihtiyaçlarınıza özel mali danışmanlık hizmeti.",
+                                  };
+
+                                  return (
+                                    <a class={`service-mega-item ${isActive(service.href) ? "is-active" : ""}`} href={service.href}>
+                                      <span class="service-mega-icon" set:html={renderIcon(details.icon)}></span>
+                                      <span class="service-mega-copy">
+                                        <span class="service-mega-label">{service.label}</span>
+                                        <span class="service-mega-desc">{details.desc}</span>
+                                      </span>
+                                      <span class="service-mega-arrow" set:html={renderIcon("ChevronRight", "h-4 w-4")}></span>
+                                    </a>
+                                  );
+                                })
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    class={`nav-main-link transition hover:text-brand-700 ${isActive(item.href ?? "") ? "text-slate-900 font-semibold" : ""}`}
+                    href={item.href}
+                    aria-current={isActive(item.href ?? "") ? "page" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })
+            }
+          </nav>
+
+          <a class="btn-primary hidden gap-2 lg:inline-flex" href={`tel:${site.phoneHref}`}>
+            <span class="inline-flex" set:html={renderIcon("PhoneCall", "h-4 w-4")}></span>
+            {site.phoneDisplay}
+          </a>
+        </div>
+
+        <nav id="mobileMenu" class="mobile-menu-panel hidden border-t border-slate-200 lg:hidden" aria-hidden="true">
+          <div class="grid gap-2 text-sm font-medium text-slate-700">
+            {
+              site.mainMenu.map((item) => {
+                if (item.type === "services") {
+                  return (
+                    <div class="rounded-xl border border-slate-200 bg-slate-50/70">
+                      <p class="px-3 pt-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{item.label}</p>
+                      <div class="grid gap-1 px-2 pb-2 pt-2">
+                        {
+                          site.serviceMenu.map((service) => (
+                            <a class={`rounded-lg px-3 py-2 transition hover:bg-slate-100 ${isActive(service.href) ? "bg-brand-50 text-brand-700" : ""}`} href={service.href}>
+                              {service.label}
+                            </a>
+                          ))
+                        }
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    class={`rounded-lg px-3 py-2 transition hover:bg-slate-100 ${isActive(item.href ?? "") ? "bg-brand-50 text-brand-700" : ""}`}
+                    href={item.href}
+                    aria-current={isActive(item.href ?? "") ? "page" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })
+            }
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {!hideHero && (
+        <section class="relative isolate overflow-hidden">
+          <img src={page.heroImage || site.heroDefaultImage} alt={page.menuLabel} class="absolute inset-0 -z-20 h-full w-full object-cover" />
+          <div class="absolute inset-0 -z-10 bg-slate-900/55"></div>
+
+          <div class="container-shell py-24 sm:py-32">
+            <div class="max-w-3xl">
+              <p class="hero-highlight border-white/35 bg-white/10 text-white">{page.heroBadge}</p>
+              <h1 class="mt-6 text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">{page.heroTitle}</h1>
+              <p class="mt-5 max-w-2xl text-base leading-8 text-slate-100 sm:text-lg">{page.heroDescription}</p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <slot />
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white py-14">
+      <div class="container-shell grid gap-10 lg:grid-cols-3">
+        <div>
+          <h3 class="text-lg font-semibold text-ink-900">{site.shortName}</h3>
+          <p class="mt-4 text-sm leading-7 text-slate-600">{site.footerText}</p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-ink-900">İletişim</h3>
+          <ul class="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+            <li>
+              <span class="footer-contact-item">
+                <span class="footer-contact-icon" set:html={renderIcon("MapPin", "h-4 w-4")}></span>
+                <span>{site.address}</span>
+              </span>
+            </li>
+            <li>
+              <a class="footer-contact-item transition hover:text-brand-700" href={`tel:${site.phoneHref}`}>
+                <span class="footer-contact-icon" set:html={renderIcon("PhoneCall", "h-4 w-4")}></span>
+                <span>{site.phoneDisplay}</span>
+              </a>
+            </li>
+            <li>
+              <a class="footer-contact-item transition hover:text-brand-700" href={`mailto:${site.email}`}>
+                <span class="footer-contact-icon" set:html={renderIcon("Mail", "h-4 w-4")}></span>
+                <span>{site.email}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="overflow-hidden rounded-2xl border border-slate-200">
+          <iframe
+            title="RZG Konum"
+            src={site.mapsEmbed}
+            class="h-64 w-full"
+            style="border: 0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="container-shell mt-10 border-t border-slate-200 pt-6 text-sm text-slate-500">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; <span id="year"></span> {site.shortName}. Tüm hakları saklıdır.</p>
+          <nav class="footer-policy-links" aria-label="Yasal Bilgilendirme">
+            <a href="/kvkk/">KVKK</a>
+            <a href="/cerez-politikasi/">Çerez Politikası</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+    <a
+      class="whatsapp-float"
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="WhatsApp ile iletişime geçin"
+      title="WhatsApp ile iletişime geçin"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M19.05 4.94A9.83 9.83 0 0 0 12.04 2a9.98 9.98 0 0 0-8.65 14.98L2 22l5.15-1.34A9.97 9.97 0 0 0 12.04 22c5.51 0 9.98-4.47 9.98-9.98a9.9 9.9 0 0 0-2.97-7.08ZM12.04 20.2a8.16 8.16 0 0 1-4.16-1.14l-.3-.18-3.06.8.82-2.98-.2-.3a8.18 8.18 0 0 1 6.9-12.57 8.14 8.14 0 0 1 5.8 2.4 8.1 8.1 0 0 1 2.4 5.79c0 4.52-3.68 8.18-8.2 8.18Zm4.49-6.1c-.25-.12-1.46-.72-1.68-.8-.22-.08-.39-.12-.56.12-.17.25-.64.8-.78.96-.15.17-.3.19-.56.07-.25-.12-1.06-.39-2.02-1.25-.74-.66-1.25-1.47-1.39-1.72-.14-.25-.02-.39.1-.51.11-.11.25-.3.37-.45.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.41-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.44 1.02 2.61c.12.17 1.76 2.68 4.26 3.76.6.26 1.08.42 1.45.54.61.2 1.17.17 1.61.11.49-.08 1.46-.6 1.67-1.17.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.47-.29Z"
+        />
+      </svg>
+    </a>
+
+    <script>
+      const toggleBtn = document.getElementById("menuToggle");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      if (toggleBtn && mobileMenu) {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const getMenuMaxHeight = () => {
+          const rect = mobileMenu.getBoundingClientRect();
+          const viewport = window.innerHeight;
+          const available = Math.max(180, viewport - rect.top - 8);
+          return `${available}px`;
+        };
+
+        const setMenuState = (isOpen: boolean, instant = false) => {
+          toggleBtn.setAttribute("aria-expanded", String(isOpen));
+          toggleBtn.setAttribute("aria-label", isOpen ? "Menüyü kapat" : "Menüyü aç");
+          toggleBtn.classList.toggle("is-open", isOpen);
+          mobileMenu.classList.toggle("is-open", isOpen);
+          mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+
+          if (instant || prefersReducedMotion) {
+            const previousTransition = mobileMenu.style.transition;
+            mobileMenu.style.transition = "none";
+            mobileMenu.style.maxHeight = isOpen ? getMenuMaxHeight() : "0px";
+            mobileMenu.getBoundingClientRect();
+            mobileMenu.style.transition = previousTransition;
+            return;
+          }
+
+          if (isOpen) {
+            mobileMenu.style.maxHeight = getMenuMaxHeight();
+          } else {
+            mobileMenu.style.maxHeight = `${mobileMenu.scrollHeight}px`;
+            requestAnimationFrame(() => {
+              mobileMenu.style.maxHeight = "0px";
+            });
+          }
+        };
+
+        mobileMenu.classList.remove("hidden");
+        mobileMenu.classList.add("menu-ready");
+        setMenuState(false, true);
+
+        toggleBtn.addEventListener("click", () => {
+          const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+          setMenuState(!isExpanded);
+        });
+
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => setMenuState(false));
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth >= 1024) {
+            setMenuState(false, true);
+          } else if (toggleBtn.getAttribute("aria-expanded") === "true") {
+            mobileMenu.style.maxHeight = getMenuMaxHeight();
+          }
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") setMenuState(false);
+        });
+      }
+
+      const year = document.getElementById("year");
+      if (year) year.textContent = new Date().getFullYear().toString();
+    </script>
+  </body>
+</html>

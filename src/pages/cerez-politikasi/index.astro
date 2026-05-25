@@ -1,0 +1,9 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import MarkdownSection from "../../components/MarkdownSection.astro";
+import page from "../../data/pages/cerez-politikasi.json";
+---
+
+<SiteLayout page={page} currentPath="/cerez-politikasi/">
+  <MarkdownSection markdown={page.body} />
+</SiteLayout>

@@ -1,0 +1,9 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import MarkdownSection from "../../components/MarkdownSection.astro";
+import page from "../../data/pages/denetim-ve-inceleme-danismanligi.json";
+---
+
+<SiteLayout page={page} currentPath="/denetim-ve-inceleme-danismanligi/">
+  <MarkdownSection markdown={page.body} />
+</SiteLayout>

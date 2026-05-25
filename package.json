@@ -1,0 +1,23 @@
+{
+  "name": "rzg-premium",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev --port 8080",
+    "dev:css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/assets/styles.css --watch",
+    "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/assets/styles.css --minify",
+    "build": "npm run build:css && ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview --port 8080"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.8",
+    "tailwindcss": "^4.1.8"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.9",
+    "astro": "^6.3.7",
+    "lucide": "^1.16.0",
+    "marked": "^18.0.4",
+    "typescript": "^6.0.3"
+  }
+}

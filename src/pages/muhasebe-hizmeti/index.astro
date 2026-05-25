@@ -1,0 +1,9 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import MarkdownSection from "../../components/MarkdownSection.astro";
+import page from "../../data/pages/muhasebe-hizmeti.json";
+---
+
+<SiteLayout page={page} currentPath="/muhasebe-hizmeti/">
+  <MarkdownSection markdown={page.body} />
+</SiteLayout>

@@ -1,0 +1,55 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import MarkdownSection from "../../components/MarkdownSection.astro";
+import page from "../../data/pages/haberler.json";
+import newsData from "../../data/haberler.json";
+
+type NewsPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  coverImage: string;
+  body: string;
+};
+
+const posts = [...(newsData.posts as NewsPost[])].sort((a, b) =>
+  b.date.localeCompare(a.date),
+);
+
+const formatDate = (rawDate: string) =>
+  new Date(rawDate).toLocaleDateString("tr-TR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+---
+
+<SiteLayout page={page} currentPath="/haberler/">
+  <section class="container-shell pb-20 pt-16 sm:pb-24 sm:pt-20">
+    <div class="news-grid">
+      {
+        posts.map((post) => (
+          <article class="news-card">
+            <a href={`/haberler/${post.slug}/`} class="news-cover">
+              <img src={post.coverImage} alt={post.title} loading="lazy" />
+            </a>
+
+            <div class="news-content">
+              <p class="news-date">{formatDate(post.date)}</p>
+              <h2>
+                <a href={`/haberler/${post.slug}/`}>{post.title}</a>
+              </h2>
+              <p>{post.excerpt}</p>
+              <a class="news-link" href={`/haberler/${post.slug}/`}>
+                Haberin devamı
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <MarkdownSection markdown={page.body} />
+</SiteLayout>

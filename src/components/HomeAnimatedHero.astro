@@ -1,0 +1,59 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+  services?: { label: string; href: string }[];
+}
+
+const {
+  title,
+  description,
+  image,
+  services = [],
+} = Astro.props;
+
+const serviceLines = services.map(
+  (service) => `${service.label} süreçlerinde işletmenize özel stratejik danışmanlık sunuyoruz.`,
+);
+---
+
+<section class="home-live-hero">
+  <img src={image} alt={title} class="home-live-hero-bg" loading="eager" />
+  <div class="home-live-hero-overlay"></div>
+
+  <div class="container-shell home-live-hero-content">
+    <div class="home-animated-frame">
+      <h1 class="home-animated-title">{title}</h1>
+      <p class="home-animated-desc">{description}</p>
+
+      {services.length > 0 && (
+        <div class="hero-services-inline" data-hero-ticker>
+          <p class="hero-services-kicker">Sunduğumuz Hizmetler Kapsamında</p>
+          <ul class="hero-services-inline-list" aria-label="Sunduğumuz Hizmetler">
+            {
+              serviceLines.map((line, index) => (
+                <li class:list={["hero-service-inline-item", index === 0 ? "is-active" : ""]}>{line}</li>
+              ))
+            }
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <script>
+    const ticker = document.querySelector("[data-hero-ticker]");
+    if (ticker) {
+      const items = Array.from(ticker.querySelectorAll(".hero-service-inline-item"));
+      if (items.length > 1) {
+        let current = 0;
+        setInterval(() => {
+          items[current]?.classList.remove("is-active");
+          current = (current + 1) % items.length;
+          items[current]?.classList.add("is-active");
+        }, 2300);
+      }
+    }
+  </script>
+</section>

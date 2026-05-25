@@ -1,0 +1,9 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import MarkdownSection from "../../components/MarkdownSection.astro";
+import page from "../../data/pages/vergi-hizmetleri.json";
+---
+
+<SiteLayout page={page} currentPath="/vergi-hizmetleri/">
+  <MarkdownSection markdown={page.body} />
+</SiteLayout>

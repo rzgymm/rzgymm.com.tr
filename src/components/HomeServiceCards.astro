@@ -1,0 +1,67 @@
+---
+import { icons } from "lucide";
+
+interface ServiceCard {
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+  imageAlt?: string;
+}
+
+interface Props {
+  cards: ServiceCard[];
+  overlap?: boolean;
+}
+
+const { cards = [], overlap = false } = Astro.props;
+
+const iconByHref: Record<string, string> = {
+  "/tam-tasdik-hizmetleri/": "FileCheck2",
+  "/vergi-hizmetleri/": "ReceiptText",
+  "/muhasebe-hizmeti/": "Calculator",
+  "/tesvik-ve-yardimlar/": "Factory",
+  "/denetim-ve-inceleme-danismanligi/": "ShieldCheck",
+};
+
+const toAttrs = (attrs: Record<string, string>) =>
+  Object.entries(attrs)
+    .map(([key, value]) => `${key}="${value}"`)
+    .join(" ");
+
+const renderIcon = (iconName: string, className = "h-5 w-5") => {
+  const iconNode = icons[iconName as keyof typeof icons] as [string, Record<string, string>][];
+  if (!iconNode) return "";
+  const children = iconNode.map(([tag, attrs]) => `<${tag} ${toAttrs(attrs)} />`).join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" class="${className}" aria-hidden="true">${children}</svg>`;
+};
+---
+
+{cards.length > 0 && (
+  <section class:list={["container-shell home-services-wrap pb-8 sm:pb-10", overlap ? "home-services-wrap-overlap pt-4 sm:pt-6" : "pt-10 sm:pt-14"]}>
+    <div class="home-services-grid">
+      {
+        cards.map((card) => (
+          <article class="home-service-card">
+            <div class="home-service-media">
+              <img src={card.image} alt={card.imageAlt || card.title} loading="lazy" />
+            </div>
+
+            <div class="home-service-body">
+              <div class="home-service-head">
+                <span class="home-service-icon" set:html={renderIcon(iconByHref[card.href] ?? "BadgeCheck")}></span>
+                <h3>{card.title}</h3>
+              </div>
+              <p>{card.description}</p>
+            </div>
+
+            <a class="home-service-btn mt-auto" href={card.href} aria-label={`${card.title} sayfasına git`}>
+              <span>Daha Fazla Detay</span>
+              <span class="home-service-btn-icon" set:html={renderIcon("ArrowRight", "h-4 w-4")}></span>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+)}

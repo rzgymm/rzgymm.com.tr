@@ -1,0 +1,9 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import MarkdownSection from "../../components/MarkdownSection.astro";
+import page from "../../data/pages/tesvik-ve-yardimlar.json";
+---
+
+<SiteLayout page={page} currentPath="/tesvik-ve-yardimlar/">
+  <MarkdownSection markdown={page.body} />
+</SiteLayout>

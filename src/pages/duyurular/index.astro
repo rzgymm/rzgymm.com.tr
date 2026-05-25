@@ -1,0 +1,55 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import MarkdownSection from "../../components/MarkdownSection.astro";
+import page from "../../data/pages/duyurular.json";
+import announcementsData from "../../data/duyurular.json";
+
+type AnnouncementPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  coverImage: string;
+  body: string;
+};
+
+const posts = [...(announcementsData.posts as AnnouncementPost[])].sort((a, b) =>
+  b.date.localeCompare(a.date),
+);
+
+const formatDate = (rawDate: string) =>
+  new Date(rawDate).toLocaleDateString("tr-TR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+---
+
+<SiteLayout page={page} currentPath="/duyurular/">
+  <section class="container-shell pb-20 pt-16 sm:pb-24 sm:pt-20">
+    <div class="news-grid">
+      {
+        posts.map((post) => (
+          <article class="news-card">
+            <a href={`/duyurular/${post.slug}/`} class="news-cover">
+              <img src={post.coverImage} alt={post.title} loading="lazy" />
+            </a>
+
+            <div class="news-content">
+              <p class="news-date">{formatDate(post.date)}</p>
+              <h2>
+                <a href={`/duyurular/${post.slug}/`}>{post.title}</a>
+              </h2>
+              <p>{post.excerpt}</p>
+              <a class="news-link" href={`/duyurular/${post.slug}/`}>
+                Duyurunun devamı
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  {posts.length === 0 && <MarkdownSection markdown={page.body} />}
+</SiteLayout>

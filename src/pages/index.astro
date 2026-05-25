@@ -1,0 +1,19 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import HomeAnimatedHero from "../components/HomeAnimatedHero.astro";
+import HomeServiceCards from "../components/HomeServiceCards.astro";
+import MarkdownSection from "../components/MarkdownSection.astro";
+import page from "../data/pages/home.json";
+import site from "../data/site.json";
+---
+
+<SiteLayout page={page} currentPath="/" hideHero={true}>
+  <HomeAnimatedHero
+    title={page.heroTitle}
+    description={page.heroDescription}
+    image={page.heroImage}
+    services={site.serviceMenu.map((service) => ({ label: service.label, href: service.href }))}
+  />
+  <HomeServiceCards cards={page.serviceCards} overlap={true} />
+  <MarkdownSection markdown={page.body} compactTop={true} introHighlights={page.introHighlights} />
+</SiteLayout>

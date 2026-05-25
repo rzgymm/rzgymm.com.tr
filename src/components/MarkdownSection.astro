@@ -1,0 +1,252 @@
+---
+import { marked } from "marked";
+
+interface Props {
+  markdown: string;
+  compactTop?: boolean;
+  introHighlights?: { title: string; description: string }[];
+}
+
+type Block = {
+  title: string;
+  tokens: any[];
+};
+
+type Section = {
+  title: string;
+  introTokens: any[];
+  blocks: Block[];
+};
+
+const { markdown, compactTop = false, introHighlights = [] } = Astro.props;
+const tokens = marked.lexer(markdown || "");
+
+const introTokens: any[] = [];
+const sections: Section[] = [];
+
+let currentSection: Section | null = null;
+let currentBlock: Block | null = null;
+
+for (const token of tokens) {
+  if (token.type === "heading" && token.depth === 2) {
+    if (currentSection) {
+      sections.push(currentSection);
+    }
+
+    currentSection = {
+      title: token.text,
+      introTokens: [],
+      blocks: [],
+    };
+    currentBlock = null;
+    continue;
+  }
+
+  if (!currentSection) {
+    introTokens.push(token);
+    continue;
+  }
+
+  if (token.type === "heading" && token.depth === 3) {
+    currentBlock = {
+      title: token.text,
+      tokens: [],
+    };
+    currentSection.blocks.push(currentBlock);
+    continue;
+  }
+
+  if (currentBlock) {
+    currentBlock.tokens.push(token);
+  } else {
+    currentSection.introTokens.push(token);
+  }
+}
+
+if (currentSection) {
+  sections.push(currentSection);
+}
+
+const introHtml = introTokens.length ? marked.parser(introTokens as any) : "";
+---
+
+<section class:list={["container-shell pb-20 sm:pb-24", compactTop ? "pt-3 sm:pt-5" : "pt-16 sm:pt-20"]}>
+  {introHtml && (
+    <article class="content-markdown intro-premium section-flat p-0" set:html={introHtml}></article>
+  )}
+
+  <div class="mt-10 space-y-10">
+    {
+      sections.map((section, sectionIndex) => {
+        const sectionIntroHtml = section.introTokens.length
+          ? marked.parser(section.introTokens as any)
+          : "";
+        const isFaqSection = section.title.toLocaleLowerCase("tr-TR").includes("sıkça sorulan");
+        const introParagraphs = section.introTokens
+          .filter((token: any) => token.type === "paragraph")
+          .map((token: any) => token.text?.trim())
+          .filter(Boolean) as string[];
+        const isHomeIntroRich = compactTop && sectionIndex === 0 && !isFaqSection && section.blocks.length === 0 && introParagraphs.length > 0;
+        const introBody = introParagraphs.length > 2 ? introParagraphs.slice(2).join(" ") : "";
+
+        return (
+          <section class="section-shell">
+            {isHomeIntroRich ? (
+              <div class="home-intro-rich">
+                <div class="home-intro-main">
+                  <p class="home-intro-eyebrow">{section.title}</p>
+                  {introParagraphs[0] && <h2 class="home-intro-subtitle">{introParagraphs[0]}</h2>}
+                  {introParagraphs[1] && <h3 class="home-intro-lead">{introParagraphs[1]}</h3>}
+                  {introBody && <p class="home-intro-body">{introBody}</p>}
+
+                  {
+                    introHighlights.length > 0 && (
+                      <div class="home-intro-points">
+                        {
+                          introHighlights.map((item, idx) => (
+                            <article class="home-intro-point">
+                              <span class="home-intro-point-icon" aria-hidden="true">
+                                {
+                                  idx % 3 === 0 ? (
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                      <path d="M12 3 5 6v5c0 5.1 3.3 9.9 7 11 3.7-1.1 7-5.9 7-11V6l-7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                                      <path d="m9.4 12.1 1.8 1.8 3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                  ) : idx % 3 === 1 ? (
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                      <path d="M3.5 18.5h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                                      <path d="M7.5 15v-4m4 4V6m4 9v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                                    </svg>
+                                  ) : (
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                      <path d="M4 19V9m8 10V5m8 14v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                                      <path d="M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                                    </svg>
+                                  )
+                                }
+                              </span>
+                              <div>
+                                <h4>{item.title}</h4>
+                                <p>{item.description}</p>
+                              </div>
+                            </article>
+                          ))
+                        }
+                      </div>
+                    )
+                  }
+                </div>
+
+                <div class="home-intro-visual" aria-hidden="true">
+                  <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="introGrad" x1="0" x2="1">
+                        <stop offset="0" stop-color="#3f76c2"></stop>
+                        <stop offset="1" stop-color="#1e3a66"></stop>
+                      </linearGradient>
+                    </defs>
+                    <rect x="36" y="54" width="488" height="312" rx="24" fill="white" stroke="#d8e2f1" stroke-width="3"></rect>
+                    <rect x="72" y="92" width="160" height="16" rx="8" fill="#dfe9f8"></rect>
+                    <rect x="72" y="122" width="248" height="12" rx="6" fill="#eaf0fa"></rect>
+                    <rect x="72" y="146" width="218" height="12" rx="6" fill="#eaf0fa"></rect>
+                    <rect x="72" y="200" width="84" height="128" rx="14" fill="#edf3fd"></rect>
+                    <rect x="170" y="170" width="84" height="158" rx="14" fill="#dce9fb"></rect>
+                    <rect x="268" y="224" width="84" height="104" rx="14" fill="#edf3fd"></rect>
+                    <path d="M72 344h280" stroke="#c9d8ee" stroke-width="4" stroke-linecap="round"></path>
+                    <circle cx="416" cy="132" r="52" fill="url(#introGrad)"></circle>
+                    <path d="M392 134h48M416 110v48" stroke="white" stroke-width="7" stroke-linecap="round"></path>
+                    <circle cx="472" cy="260" r="38" fill="#f0f5ff" stroke="#d4e1f6" stroke-width="3"></circle>
+                    <path d="M456 260h32" stroke="#2f5da1" stroke-width="6" stroke-linecap="round"></path>
+                  </svg>
+                </div>
+              </div>
+            ) : (
+              <div class="section-shell-head">
+                <h2>{section.title}</h2>
+                {sectionIntroHtml && (
+                  <div class={`content-markdown ${section.blocks.length === 0 ? "section-story" : ""}`} set:html={sectionIntroHtml}></div>
+                )}
+              </div>
+            )}
+
+            {section.blocks.length > 0 &&
+              (isFaqSection ? (
+                <div class="faq-accordion mt-6">
+                  {
+                    section.blocks.map((block, index) => {
+                      const blockHtml = marked.parser(block.tokens as any);
+                      const faqId = `faq-item-${section.title.replaceAll(" ", "-").toLowerCase()}-${index}`;
+                      return (
+                        <article class="faq-item" data-faq-item>
+                          <button type="button" class="faq-trigger" aria-expanded={index === 0 ? "true" : "false"} aria-controls={faqId}>
+                            <span class="faq-index">{String(index + 1).padStart(2, "0")}</span>
+                            <span class="faq-question">{block.title}</span>
+                            <span class="faq-chevron">+</span>
+                          </button>
+                          <div id={faqId} class={`faq-content ${index === 0 ? "is-open" : ""}`} data-faq-content>
+                            <div class="content-markdown faq-content-inner" set:html={blockHtml}></div>
+                          </div>
+                        </article>
+                      );
+                    })
+                  }
+                </div>
+              ) : (
+                <div class="section-block-grid">
+                  {
+                    section.blocks.map((block) => {
+                      const blockHtml = marked.parser(block.tokens as any);
+
+                      return (
+                        <article class="section-block-card">
+                          <h3>{block.title}</h3>
+                          <div class="content-markdown" set:html={blockHtml}></div>
+                        </article>
+                      );
+                    })
+                  }
+                </div>
+              ))}
+          </section>
+        );
+      })
+    }
+  </div>
+</section>
+
+<script>
+  const faqItems = Array.from(document.querySelectorAll("[data-faq-item]"));
+  faqItems.forEach((item) => {
+    const trigger = item.querySelector(".faq-trigger");
+    const content = item.querySelector("[data-faq-content]");
+    const chevron = item.querySelector(".faq-chevron");
+    if (!(trigger instanceof HTMLElement) || !(content instanceof HTMLElement) || !(chevron instanceof HTMLElement)) return;
+
+    if (content.classList.contains("is-open")) {
+      content.style.maxHeight = `${content.scrollHeight}px`;
+      chevron.textContent = "−";
+    }
+
+    trigger.addEventListener("click", () => {
+      const isExpanded = trigger.getAttribute("aria-expanded") === "true";
+      faqItems.forEach((other) => {
+        const otherTrigger = other.querySelector(".faq-trigger");
+        const otherContent = other.querySelector("[data-faq-content]");
+        const otherChevron = other.querySelector(".faq-chevron");
+        if (!(otherTrigger instanceof HTMLElement) || !(otherContent instanceof HTMLElement) || !(otherChevron instanceof HTMLElement)) return;
+
+        otherTrigger.setAttribute("aria-expanded", "false");
+        otherContent.classList.remove("is-open");
+        otherContent.style.maxHeight = "0px";
+        otherChevron.textContent = "+";
+      });
+
+      if (!isExpanded) {
+        trigger.setAttribute("aria-expanded", "true");
+        content.classList.add("is-open");
+        content.style.maxHeight = `${content.scrollHeight}px`;
+        chevron.textContent = "−";
+      }
+    });
+  });
+</script>

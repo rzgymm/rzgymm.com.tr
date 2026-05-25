@@ -1,6 +1,6 @@
 {
   "siteName": "RZG Yeminli Mali Müşavirlik Denetim ve Danışmanlık A.Ş.",
-  "shortName": "RZG YMM",
+  "shortName": "RZG YEMİNLİ MALİ MÜŞAVİRLİK",
   "phoneDisplay": "0554 417 5828",
   "phoneHref": "+905544175828",
   "email": "info@rzgymm.com.tr",
@@ -21,6 +21,7 @@
     },
     {
       "label": "Hizmetlerimiz",
+      "href": "",
       "type": "services"
     },
     {

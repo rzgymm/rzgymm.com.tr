@@ -6,21 +6,59 @@
   "email": "info@rzgymm.com.tr",
   "address": "Finanskent Mah. Finans Cad. No:5 Sarphan Sitesi A Blok No:279 Ümraniye / İstanbul",
   "mapsEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d908.5886926585447!2d29.106166509118452!3d41.0048770249205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac89078137489%3A0x4c3dc10e47e92814!2sSarphan%20Finanspark!5e1!3m2!1str!2str!4v1763309871103!5m2!1str!2str",
-  "heroDefaultImage": "https://rzgymm.com.tr/wp-content/uploads/2024/11/erka-ymm-1.jpg",
+  "heroDefaultImage": "https://rzgymm.com.tr/uploads/rzgymm.jpg",
+  "footerText": "RZG, firmaların sadece bugünkü mali uyumunu değil, aynı zamanda uzun vadeli mali sağlığını da garanti altına almak için çalışan güvenilir bir mali müşavirlik çözüm ortağıdır.",
   "mainMenu": [
-    { "label": "Anasayfa", "href": "/", "type": "link" },
-    { "label": "Kurumsal", "href": "/kurumsal/", "type": "link" },
-    { "label": "Hizmetlerimiz", "type": "services" },
-    { "label": "Duyurular", "href": "/duyurular/", "type": "link" },
-    { "label": "Haberler", "href": "/haberler/", "type": "link" },
-    { "label": "İletişim", "href": "/iletisim/", "type": "link" }
+    {
+      "label": "Anasayfa",
+      "href": "/",
+      "type": "link"
+    },
+    {
+      "label": "Kurumsal",
+      "href": "/kurumsal/",
+      "type": "link"
+    },
+    {
+      "label": "Hizmetlerimiz",
+      "type": "services"
+    },
+    {
+      "label": "Duyurular",
+      "href": "/duyurular/",
+      "type": "link"
+    },
+    {
+      "label": "Haberler",
+      "href": "/haberler/",
+      "type": "link"
+    },
+    {
+      "label": "İletişim",
+      "href": "/iletisim/",
+      "type": "link"
+    }
   ],
   "serviceMenu": [
-    { "label": "Tam Tasdik Hizmetleri", "href": "/tam-tasdik-hizmetleri/" },
-    { "label": "KDV İadesi", "href": "/muhasebe-hizmeti/" },
-    { "label": "Denetim ve İnceleme Danışmanlığı", "href": "/denetim-ve-inceleme-danismanligi/" },
-    { "label": "Vergi Hizmetleri", "href": "/vergi-hizmetleri/" },
-    { "label": "Teşvik ve Yardımlar", "href": "/tesvik-ve-yardimlar/" }
-  ],
-  "footerText": "RZG, firmaların sadece bugünkü mali uyumunu değil, aynı zamanda uzun vadeli mali sağlığını da garanti altına almak için çalışan güvenilir bir mali müşavirlik çözüm ortağıdır."
+    {
+      "label": "Tam Tasdik Hizmetleri",
+      "href": "/tam-tasdik-hizmetleri/"
+    },
+    {
+      "label": "KDV İadesi",
+      "href": "/muhasebe-hizmeti/"
+    },
+    {
+      "label": "Denetim ve İnceleme Danışmanlığı",
+      "href": "/denetim-ve-inceleme-danismanligi/"
+    },
+    {
+      "label": "Vergi Hizmetleri",
+      "href": "/vergi-hizmetleri/"
+    },
+    {
+      "label": "Teşvik ve Yardımlar",
+      "href": "/tesvik-ve-yardimlar/"
+    }
+  ]
 }

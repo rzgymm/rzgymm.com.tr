@@ -76,12 +76,12 @@ const renderIcon = (iconName: string, className = "h-5 w-5") => {
     <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
       <div class="border-b border-slate-100 bg-slate-50/80">
         <div class="container-shell flex items-center justify-between gap-2 py-1.5 text-[11px] text-slate-600 sm:flex-wrap sm:gap-3 sm:py-3 sm:text-sm">
-          <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap sm:flex-wrap sm:gap-4">
+          <div class="flex min-w-0 items-center gap-3 overflow-x-auto whitespace-nowrap sm:flex-wrap sm:gap-4">
             <a class="top-contact-link font-medium text-slate-700 transition hover:text-brand-700" href={`tel:${site.phoneHref}`}>
               <span class="top-contact-icon" set:html={renderIcon("PhoneCall", "h-3.5 w-3.5")}></span>
               {site.phoneDisplay}
             </a>
-            <a class="top-contact-link hidden transition hover:text-brand-700 sm:inline-flex" href={`mailto:${site.email}`}>
+            <a class="top-contact-link transition hover:text-brand-700" href={`mailto:${site.email}`}>
               <span class="top-contact-icon" set:html={renderIcon("Mail", "h-3.5 w-3.5")}></span>
               {site.email}
             </a>

@@ -20,6 +20,7 @@ collections:
           - { label: Logo Görseli, name: logoImage, widget: image, required: false }
           - { label: Logo Alt Metni, name: logoAlt, widget: string, required: false }
           - { label: Üst Logo Alt Metni, name: logoTagline, widget: string }
+          - { label: Footer Marka Başlığı, name: footerBrandName, widget: string, required: false }
           - { label: Telefon (Görünen), name: phoneDisplay, widget: string }
           - { label: Telefon (Link), name: phoneHref, widget: string }
           - { label: E-posta, name: email, widget: string }

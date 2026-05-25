@@ -17,6 +17,7 @@ collections:
         fields:
           - { label: Site Adı, name: siteName, widget: string }
           - { label: Kısa Ad, name: shortName, widget: string }
+          - { label: Üst Logo Alt Metni, name: logoTagline, widget: string }
           - { label: Telefon (Görünen), name: phoneDisplay, widget: string }
           - { label: Telefon (Link), name: phoneHref, widget: string }
           - { label: E-posta, name: email, widget: string }

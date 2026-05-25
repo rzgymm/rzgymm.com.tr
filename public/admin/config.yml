@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: ahmed/rzg-premium-local
+  repo: rzgymm/rzgymm.com.tr
   branch: main
 
 media_folder: public/uploads

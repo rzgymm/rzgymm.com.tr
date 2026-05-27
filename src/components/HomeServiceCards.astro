@@ -55,7 +55,7 @@ const renderIcon = (iconName: string, className = "h-5 w-5") => {
               <p>{card.description}</p>
             </div>
 
-            <a class="home-service-btn mt-auto" href={card.href} aria-label={`${card.title} sayfasına git`}>
+            <a class="home-service-btn" href={card.href} aria-label={`${card.title} sayfasına git`}>
               <span>Daha Fazla Detay</span>
               <span class="home-service-btn-icon" set:html={renderIcon("ArrowRight", "h-4 w-4")}></span>
             </a>

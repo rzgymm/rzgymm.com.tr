@@ -679,7 +679,7 @@
   .faq-item {
     border: 1px solid rgba(203, 213, 225, 0.72);
     border-radius: 12px;
-    background: transparent;
+    background: #000;
     box-shadow: none;
     overflow: hidden;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;

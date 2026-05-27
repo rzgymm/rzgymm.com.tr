@@ -13,9 +13,9 @@ Site adresi:
 
 - `http://localhost:8080`
 
-Admin adresi:
+CMS adresi:
 
-- `http://localhost:8080/admin/index.html`
+- `http://localhost:8080/cms/`
 
 ## İçerik Yapısı
 

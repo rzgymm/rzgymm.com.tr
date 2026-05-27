@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>RZG CMS</title>
+    <link href="/cms/config.yml" type="text/yaml" rel="cms-config-url" />
+    <style>
+      .cms-auth-hide {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <script>
+      (function () {
+        function shouldHideGithubButton(el) {
+          const text = (el.textContent || "").toLowerCase();
+          return (
+            text.includes("github") &&
+            (text.includes("sign in") || text.includes("giris") || text.includes("giriş"))
+          );
+        }
+
+        function hideGithubAuth() {
+          const candidates = document.querySelectorAll("button, a");
+          candidates.forEach((el) => {
+            if (shouldHideGithubButton(el)) {
+              el.classList.add("cms-auth-hide");
+            }
+          });
+        }
+
+        const observer = new MutationObserver(hideGithubAuth);
+        observer.observe(document.body, { childList: true, subtree: true });
+        hideGithubAuth();
+      })();
+    </script>
+  </body>
+</html>

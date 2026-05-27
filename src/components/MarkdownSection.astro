@@ -75,7 +75,7 @@ const introHtml = introTokens.length ? marked.parser(introTokens as any) : "";
     <article class="content-markdown intro-premium section-flat p-0" set:html={introHtml}></article>
   )}
 
-  <div class="mt-10 space-y-10">
+  <div class="space-y-10">
     {
       sections.map((section, sectionIndex) => {
         const sectionIntroHtml = section.introTokens.length

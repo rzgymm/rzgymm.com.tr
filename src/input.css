@@ -786,10 +786,10 @@
     position: relative;
     z-index: 2;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     min-height: inherit;
-    padding-top: clamp(0.9rem, 2vw, 1.4rem);
-    padding-bottom: clamp(1rem, 2.4vw, 1.6rem);
+    padding-top: clamp(1.2rem, 2.4vw, 2rem);
+    padding-bottom: clamp(1.2rem, 2.4vw, 2rem);
   }
 
   .home-animated-frame {

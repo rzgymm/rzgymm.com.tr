@@ -605,7 +605,9 @@
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid rgba(203, 213, 225, 0.72);
-    background: linear-gradient(140deg, rgba(237, 245, 255, 0.9), rgba(250, 252, 255, 0.95));
+    background: url("../uploads/anasayfa-finans.jpg");
+    background-size: cover;
+    background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;

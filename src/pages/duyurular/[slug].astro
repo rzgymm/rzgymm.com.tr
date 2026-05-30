@@ -42,7 +42,7 @@ const page = {
 };
 ---
 
-<SiteLayout page={page} currentPath={`/duyurular/${post.slug}/`}>
+<SiteLayout page={page} currentPath={`/duyurular/${post.slug}/`} hideHero={true}>
   <section class="container-shell pb-8 pt-12 sm:pt-16">
     <div class="news-article-head">
       <a href="/duyurular/" class="news-back-link">← Tüm Duyurular</a>
@@ -50,5 +50,5 @@ const page = {
     </div>
   </section>
 
-  <ArticleContent markdown={post.body} />
+  <ArticleContent title={post.title} markdown={post.body} />
 </SiteLayout>

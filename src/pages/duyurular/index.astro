@@ -37,6 +37,12 @@ const formatDate = (rawDate: string) =>
             </a>
 
             <div class="news-content">
+              {post.category && (
+                <span class="inline-flex max-w-[58%] items-center truncate rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+                  {post.category}
+                </span>
+              )}
+
               <p class="news-date">{formatDate(post.date)}</p>
               <h2>
                 <a href={`/duyurular/${post.slug}/`}>{post.title}</a>
@@ -48,11 +54,6 @@ const formatDate = (rawDate: string) =>
                   Devamını oku...
                 </a>
 
-                {post.category && (
-                  <span class="inline-flex max-w-[58%] items-center truncate rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-600">
-                    {post.category}
-                  </span>
-                )}
               </div>
             </div>
           </article>

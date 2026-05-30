@@ -1,0 +1,19 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "rzg-gib-duyuru-cron",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-30",
+  "triggers": {
+    "crons": [
+      "15 21 * * *"
+    ]
+  },
+  "vars": {
+    "GIB_DUYURU_URL": "https://dijital.gib.gov.tr/apigateway/notice/duyuru/duyurular",
+    "DEFAULT_COVER_IMAGE": "https://rzgymm.com.tr/uploads/vergi-denetimi.jpg",
+    "GITHUB_REPO": "rzgymm/rzgymm.com.tr",
+    "GITHUB_BRANCH": "main",
+    "GITHUB_FILE_PATH": "src/data/duyurular.json",
+    "MAX_POSTS": "300"
+  }
+}

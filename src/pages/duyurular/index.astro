@@ -11,6 +11,7 @@ type AnnouncementPost = {
   date: string;
   coverImage: string;
   body: string;
+  category?: string;
 };
 
 const posts = [...(announcementsData.posts as AnnouncementPost[])].sort((a, b) =>
@@ -32,17 +33,22 @@ const formatDate = (rawDate: string) =>
         posts.map((post) => (
           <article class="news-card">
             <a href={`/duyurular/${post.slug}/`} class="news-cover">
-              <img src={post.coverImage} alt={post.title} loading="lazy" />
+              <img src={post.coverImage} alt={post.title} loading="lazy" class="hidden" />
             </a>
 
             <div class="news-content">
+              {post.category && (
+                <p class="mb-2 inline-flex rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700">
+                  {post.category}
+                </p>
+              )}
               <p class="news-date">{formatDate(post.date)}</p>
               <h2>
                 <a href={`/duyurular/${post.slug}/`}>{post.title}</a>
               </h2>
               <p>{post.excerpt}</p>
               <a class="news-link" href={`/duyurular/${post.slug}/`}>
-                Duyurunun devamı
+                Devamını oku...
               </a>
             </div>
           </article>
